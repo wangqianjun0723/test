@@ -19,7 +19,7 @@ jobs:
           root-password: "${{ env.DB_PASSWORD }}"
           password: "${{ env.DB_PASSWORD }}"
           
-      - run: mysql -uroot -e 'SELECT version()'
+      - run: mysql -uroot -p ${{ env.root-password }} -e 'SELECT version()'
 
       - run: |
             mysql -uroot -p ${{ env.root-password }} -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
