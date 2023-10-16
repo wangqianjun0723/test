@@ -22,12 +22,12 @@ jobs:
       - run: mysql -uroot -e 'SELECT version()'
 
       - run: |
-            mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
+            mysql -uroot -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
             -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - name: Boost user
         run: |
-          mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
+          mysql -uroot -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
           IDENTIFIED WITH mysql_native_password BY 'root';" \
           -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
