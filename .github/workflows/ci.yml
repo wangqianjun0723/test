@@ -16,7 +16,7 @@ jobs:
       - uses: shogo82148/actions-setup-mysql@v1
         with:
           mysql-version: "8.1"
-          root-password: "${{ env.DB_PASSWORD }}"
+            #          root-password: "${{ env.DB_PASSWORD }}"
           password: "${{ env.DB_PASSWORD }}"
           
       - run: mysql -uroot -e 'SELECT version()'
