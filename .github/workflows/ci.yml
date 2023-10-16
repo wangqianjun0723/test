@@ -16,13 +16,13 @@ jobs:
       - uses: shogo82148/actions-setup-mysql@v1
         with:
           mysql-version: "8.1"
-            #          root-password: "${{ env.DB_PASSWORD }}"
+          root-password: "${{ env.DB_PASSWORD }}"
           password: "${{ env.DB_PASSWORD }}"
           
       - run: mysql -uroot -e 'SELECT version()'
 
       - run: |
-            mysql -uroot -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
+            mysql -uroot -p ${{ env.root-password }} -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
             -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       # - name: Boost user
@@ -31,5 +31,5 @@ jobs:
       #     IDENTIFIED WITH mysql_native_password BY 'root';" \
       #     -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
-      - run: mysql -uroot -e 'show databases;'
+      - run: mysql -uroot -p ${{ env.root-password }} -e 'show databases;'
 
