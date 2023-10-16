@@ -18,18 +18,20 @@ jobs:
           mysql-version: "8.1"
           root-password: "${{ env.DB_PASSWORD }}"
           password: "${{ env.DB_PASSWORD }}"
-          
+
       - run: mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'SELECT version()'
 
       - run: |
             mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
             -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
-      # - name: Boost user
-      #   run: |
-      #     mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
-      #     IDENTIFIED WITH mysql_native_password BY 'root';" \
-      #     -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+      - name: Boost user
+        run: |
+          mysql -uroot -p'${{ env.DB_PASSWORD }}' -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
+          IDENTIFIED WITH mysql_native_password BY 'root';" \
+          -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - run: mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'show databases;'
+
+      - run: mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'select user from mysql.user;'
 
