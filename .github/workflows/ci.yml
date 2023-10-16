@@ -17,6 +17,7 @@ jobs:
         with:
           mysql-version: "8.1"
           user: "${{ env.DB_USER }}"
+          root-password: "${{ env.DB_PASSWORD }}"
           password: "${{ env.DB_PASSWORD }}"
 
       - run: mysql -u'${{ env.DB_USER }}' -p'${{ env.DB_PASSWORD }}' -e 'SELECT version()'
