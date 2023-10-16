@@ -22,7 +22,7 @@ jobs:
       - run: mysql -uroot -e 'SELECT version()'
 
       - run: |
-            mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
+            mysql -uroot -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
             -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       # - name: Boost user
