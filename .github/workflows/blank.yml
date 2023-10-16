@@ -1,6 +1,9 @@
-name: CI
+name: Continuous Integration
 
-on: push
+on:
+    pull_request:
+      branches:
+        - main
 
 env:
     MYSQL_DATABASE: test_user
@@ -13,14 +16,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: 3306
-        container port: 3306
-        character set server: 'utf8'
-        collation server: 'utf8_general_ci'
-        mysql version: '8.0'
-        mysql database: ${{ env.MYSQL_DATABASE }}
-        mysql root password: ${{ env.DB_PASSWORD }}
-        mysql user: ${{ env.DB_USER }}
-        mysql password: ${{ env.DB_PASSWORD }}
+      - uses: actions/checkout@v4
+
+      - uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.1"
+
+      - run: mysql -uroot -e 'SELECT version()'
+
+      - run: |
+            mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
+            -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: Boost user
+        run: |
+          mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
+          IDENTIFIED WITH mysql_native_password BY 'root';" \
+          -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
