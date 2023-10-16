@@ -1,7 +1,5 @@
 name: CI
-
 on: push
-
 env:
     MYSQL_DATABASE: test_user
     DB_USER: root
@@ -18,17 +16,20 @@ jobs:
       - uses: shogo82148/actions-setup-mysql@v1
         with:
           mysql-version: "8.1"
-
+          root-password: "${{ env.DB_PASSWORD }}"
+          password: "${{ env.DB_PASSWORD }}"
+          
       - run: mysql -uroot -e 'SELECT version()'
 
       - run: |
-            mysql -uroot -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
+            mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
             -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
-      - name: Boost user
-        run: |
-          mysql -uroot -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
-          IDENTIFIED WITH mysql_native_password BY 'root';" \
-          -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+      # - name: Boost user
+      #   run: |
+      #     mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
+      #     IDENTIFIED WITH mysql_native_password BY 'root';" \
+      #     -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - run: mysql -uroot -e 'show databases;'
+
