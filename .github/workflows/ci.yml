@@ -19,10 +19,10 @@ jobs:
           root-password: "${{ env.DB_PASSWORD }}"
           password: "${{ env.DB_PASSWORD }}"
           
-      - run: mysql -uroot -p ${{ env.DB_PASSWORD }} -e 'SELECT version()'
+      - run: mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'SELECT version()'
 
       - run: |
-            mysql -uroot -p ${{ env.DB_PASSWORD }} -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
+            mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' \
             -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       # - name: Boost user
@@ -31,5 +31,5 @@ jobs:
       #     IDENTIFIED WITH mysql_native_password BY 'root';" \
       #     -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
-      - run: mysql -uroot -p ${{ env.DB_PASSWORD }} -e 'show databases;'
+      - run: mysql -uroot -p'${{ env.DB_PASSWORD }}' -e 'show databases;'
 
